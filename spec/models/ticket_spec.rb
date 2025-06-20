@@ -9,10 +9,9 @@ RSpec.describe Ticket, type: :model do
     it { is_expected.to validate_presence_of :title }
     it { is_expected.to validate_presence_of :description }
 
-    it {
-      is_expected.to validate_inclusion_of(:status)
-        .in_array(described_class.statuses.keys)
-    }
+    it 'has expected enum keys' do
+      expect(described_class.statuses.keys).to match_array(%w[open in_progress closed])
+    end
   end
 
   describe 'associations' do

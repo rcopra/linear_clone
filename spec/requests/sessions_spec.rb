@@ -29,4 +29,19 @@ RSpec.describe 'Sessions', type: :request do
       end
     end
   end
+
+  describe '#destroy' do
+    let(:user) { create(:user) }
+
+    before do
+      post session_path, params: { session: { email: user.email, password: 'secure123' } }
+    end
+
+    it 'logs out the user and clears the session' do
+      delete session_path
+
+      expect(response).to have_http_status(:no_content)
+      expect(session[:user_id]).to be_nil
+    end
+  end
 end

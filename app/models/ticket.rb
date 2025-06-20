@@ -9,11 +9,10 @@ class Ticket < ApplicationRecord
   belongs_to :project
 
   enum :status, {
-    open:        0,
-    in_progress: 1,
-    closed:      2
-  }, validate: true
+    open:        'open',
+    in_progress: 'in_progress',
+    closed:      'closed'
+  }, prefix: :status
 
-  validates :status, inclusion: { in: statuses.keys }
   validates :title, :description, presence: true
 end

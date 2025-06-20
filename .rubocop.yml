@@ -65,6 +65,9 @@ Rails/UnknownEnv:
     - test
     - staging
 
+RSpec/ExampleLength:
+  Enabled: false
+
 RSpec/MultipleExpectations:
   Enabled: false
 

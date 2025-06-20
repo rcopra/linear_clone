@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SessionsController < ApplicationController
   def show
     render json: blueprint_class.render(current_user, view: :session), status: :ok
@@ -12,6 +14,11 @@ class SessionsController < ApplicationController
     else
       render json: { error: 'Invalid credentials' }, status: :unauthorized
     end
+  end
+
+  def destroy
+    reset_session
+    head :no_content
   end
 
   private
