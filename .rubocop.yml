@@ -87,6 +87,9 @@ Style/Lambda:
 Style/Documentation:
   Enabled: false
 
+Style/ClassAndModuleChildren:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   Enabled: true
   EnforcedStyle: always

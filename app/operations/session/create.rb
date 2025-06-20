@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class User::Create
+class Session::Create
   include Operation
 
   def initialize(params)
@@ -8,9 +8,9 @@ class User::Create
   end
 
   def call
-    user = User.new(@params)
+    user = User.find_by(email: @params[:email])
 
-    if user.save
+    if user&.authenticate(@params[:password])
       success(user)
     else
       failure(user)

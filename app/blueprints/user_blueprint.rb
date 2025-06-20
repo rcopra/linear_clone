@@ -11,4 +11,9 @@ class UserBlueprint < Blueprinter::Base
     include_view :default
     field :created_at
   end
+
+  view :session do
+    include_view :default
+    field :created_at
+  end
 end
