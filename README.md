@@ -49,3 +49,39 @@ This application is designed to mimic [Linear](https://linear.app/). Development
 ```
 </details>
 
+Summary of Associations
+User
+
+    has_many :tickets (created)
+
+    has_many :assigned_tickets, class_name: "Ticket", foreign_key: :assignee_id
+
+    has_many :comments
+
+Ticket
+
+    belongs_to :user (creator)
+
+    belongs_to :assignee, class_name: "User", optional
+
+    belongs_to :project (optional)
+
+    has_many :comments
+
+Comment
+
+    belongs_to :user
+
+    belongs_to :ticket
+
+Project (optional but helpful)
+
+    belongs_to :team
+
+    has_many :tickets
+
+Team (optional)
+
+    has_many :projects
+
+    has_many :users (could be through memberships)
