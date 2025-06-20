@@ -50,6 +50,7 @@ This application is designed to mimic [Linear](https://linear.app/). Development
 </details>
 
 Summary of Associations
+
 User
 
     has_many :tickets (created)

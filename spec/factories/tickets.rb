@@ -2,9 +2,9 @@
 
 FactoryBot.define do
   factory :ticket do
-    title { 'MyString' }
-    description { 'MyText' }
-    status { 'MyString' }
-    user { nil }
+    title { 'Fix App' }
+    description { 'Ticket outlining steps to fix the app' }
+    status { 'in_progress' }
+    user
   end
 end
