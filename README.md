@@ -1,24 +1,51 @@
-# README
+# Linear Clone
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This application is designed to mimic [Linear](https://linear.app/). Development will use RSpec and focus on TDD throughout the build. More details to come later.
 
-Things you may want to cover:
+<details>
+<summary>🔧 Database Schema for MVP</summary>
 
-* Ruby version
+```plaintext
+┌────────────┐        ┌────────────┐        ┌────────────┐
+│   Users    │        │  Projects  │        │   Teams    │
+├────────────┤        ├────────────┤        ├────────────┤
+│ id         │◄────┐  │ id         │◄──┐    │ id         │
+│ first_name │     └──│ name       │   └────│ name       │
+│ last_name  │        │ team_id FK │        │            │
+│ email      │        └────────────┘        └────────────┘
+│ password   │
+└────────────┘
 
-* System dependencies
+        ▲
+        │
+        │ FK
+┌───────┴────────┐
+│    Tickets     │
+├────────────────┤
+│ id             │
+│ title          │
+│ description    │
+│ status         │ (enum: open, in_progress, closed)
+│ user_id    FK  │►── belongs_to :user
+│ project_id FK  │►── belongs_to :project (optional)
+│ assignee_id FK │►── user assigned to work on the ticket
+├────────────────┤
+│ timestamps     │
+└────────────────┘
 
-* Configuration
+        ▲
+        │
+        │
+┌───────┴────────┐
+│   Comments     │
+├────────────────┤
+│ id             │
+│ body           │
+│ user_id    FK  │►── author
+│ ticket_id  FK  │►── ticket it belongs to
+├────────────────┤
+│ timestamps     │
+└────────────────┘
+```
+</details>
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
