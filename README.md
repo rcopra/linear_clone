@@ -49,7 +49,7 @@ This application is designed to mimic [Linear](https://linear.app/). Development
 ```
 </details>
 
-Summary of Associations
+## Summary of Associations
 
 User
 
@@ -86,3 +86,35 @@ Team (optional)
     has_many :projects
 
     has_many :users (could be through memberships)
+
+## ✅ MVP User Stories
+
+This application mimics core functionality of [Linear](https://linear.app), with a TDD approach to development.
+
+### 👤 Users
+- [ ] As a user, I can sign up with a first name, last name, email, and password.
+- [ ] As a user, I can log in to the app securely.
+- [ ] As a user, I can view a list of all users on the team (for assignment purposes).
+- [ ] As a user, I can be assigned to tickets.
+- [ ] As a user, I can view tickets assigned to me.
+
+### 📋 Tickets
+- [ ] As a user, I can create a ticket with a title and description.
+- [ ] As a user, I can assign a ticket to a teammate.
+- [ ] As a user, I can view all tickets.
+- [ ] As a user, I can view details of a specific ticket.
+- [ ] As a user, I can change the status of a ticket (`open`, `in_progress`, `closed`).
+
+### 🧑‍🤝‍🧑 Teams
+- [ ] As a user, I belong to a team.
+- [ ] As a user, I can view the list of team members.
+- [ ] As a user, I can see all projects belonging to my team.
+
+### 📁 Projects
+- [ ] As a user, I can view a list of projects.
+- [ ] As a user, I can create a project and assign it to a team.
+- [ ] As a user, I can associate tickets with projects.
+
+### 💬 Comments
+- [ ] As a user, I can add a comment to a ticket.
+- [ ] As a user, I can view all comments on a ticket.
