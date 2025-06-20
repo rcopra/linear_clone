@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :team do
-    name { 'MyString' }
+    name { 'A team' }
   end
 end

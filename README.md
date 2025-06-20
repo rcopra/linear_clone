@@ -1,6 +1,6 @@
 # Linear Clone
 
-This application is designed to mimic [Linear](https://linear.app/). Development will use RSpec and focus on TDD throughout the build. More details to come later.
+This application is designed to mimic [Linear](https://linear.app/). Development will use RSpec and focus on TDD throughout the build. This project is for the purpose of learning and my growth as a developer. More details to come later.
 
 <details>
 <summary>🔧 Database Schema for MVP</summary>
