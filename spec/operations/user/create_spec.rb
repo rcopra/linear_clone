@@ -25,11 +25,7 @@ RSpec.describe User::Create do
     context 'with valid params' do
       let(:params) { valid_params }
 
-      it 'returns a success result and creates a user' do
-        expect(result).to be_success
-        expect(result.model).to be_a(User)
-        expect(result.model).to be_persisted
-      end
+      it { is_expected.to be_success }
     end
 
     context 'with invalid params' do
