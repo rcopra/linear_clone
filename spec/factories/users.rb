@@ -5,6 +5,6 @@ FactoryBot.define do
     first_name { 'Rick' }
     last_name { 'Copra' }
     email { 'rick@example.com' }
-    password_digest { 'secure123' }
+    password { 'secure123' }
   end
 end
