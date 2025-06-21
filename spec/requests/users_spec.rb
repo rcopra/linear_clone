@@ -30,7 +30,11 @@ RSpec.describe 'Users', type: :request do
   end
 
   describe '#create' do
-    subject(:request) { post users_path, params: { user: params } }
+    subject(:request) do
+      post users_path,
+           params:  { user: params },
+           headers: { 'Accept' => 'application/json' }
+    end
 
     context 'with valid params' do
       let(:params) { valid_params }

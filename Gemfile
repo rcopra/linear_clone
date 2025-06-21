@@ -13,6 +13,7 @@ gem 'turbo-rails'
 # Asset pipeline & frontend
 gem 'blueprinter', '~> 1.1' # Fast JSON serializer
 gem 'jbuilder' # JSON builder for APIs
+gem 'pagy'
 gem 'sprockets-rails' # Rails asset pipeline
 gem 'stimulus-rails'
 gem 'tailwindcss-rails' # Tailwind CSS via Rails integration

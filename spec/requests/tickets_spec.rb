@@ -16,12 +16,32 @@ RSpec.describe 'Tickets', type: :request do
       project_id:  project.id
     }
   end
-
   let(:invalid_params) do
     {
       title:       '',
       description: nil
     }
+  end
+
+  describe '#index' do
+    subject(:request) { get tickets_path, headers: { 'Accept' => 'application/json' } }
+
+    let!(:ticket1) { create(:ticket, title: 'First Ticket', project: project, user: user) }
+    let!(:ticket2) { create(:ticket, title: 'Second Ticket', project: project, user: user) }
+
+    before { request }
+
+    it 'returns 200 OK' do
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'returns all tickets and pagination metadata' do
+      expect(parsed_response['tickets'].count).to eq(2)
+      titles = parsed_response['tickets'].map { |t| t['title'] }
+      expect(titles).to include('First Ticket', 'Second Ticket')
+
+      expect(parsed_response['pagy']).to include('page', 'limit', 'count', 'pages')
+    end
   end
 
   describe '#create' do

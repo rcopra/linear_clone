@@ -78,6 +78,12 @@ RSpec/NestedGroups:
   Enabled: true
   Max: 4
 
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/IndexedLet:
+  Enabled: false
+
 RSpec/ImplicitSubject:
   EnforcedStyle: single_statement_only
 
