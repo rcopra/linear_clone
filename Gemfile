@@ -7,7 +7,7 @@ gem 'bcrypt', '~> 3.1.7'                     # For has_secure_password
 gem 'importmap-rails'
 gem 'pg', '~> 1.1'                           # PostgreSQL database
 gem 'puma', '>= 5.0'                         # Web server
-gem 'rails', '~> 7.2.2', '>= 7.2.2.1'
+gem 'rails', '~> 8.0.2'
 gem 'turbo-rails'
 
 # Asset pipeline & frontend
