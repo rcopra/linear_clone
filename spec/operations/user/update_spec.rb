@@ -117,7 +117,7 @@ RSpec.describe 'Users', type: :request do
     it 'deletes the user and returns 204 No Content' do
       request
       expect(response).to have_http_status(:no_content)
-      expect(User.exists?(user.id)).to be_falsey
+      expect(User).not_to exist(user.id)
     end
   end
 end

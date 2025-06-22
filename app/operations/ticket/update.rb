@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Ticket::Update
   include Operation
 
