@@ -39,7 +39,7 @@ RSpec.describe 'Users', type: :request do
     context 'with valid params' do
       let(:params) { valid_params }
 
-      it 'returns 204 Created' do
+      it 'returns 201 Created' do
         expect { request }.to change(User, :count).by(1)
         expect(response).to have_http_status(:created)
       end

@@ -1,32 +1,45 @@
 # frozen_string_literal: true
 
 class TicketsController < ApplicationController
-  def index
-    @pagy, @tickets = pagy(Ticket.all)
+  before_action :ticket, only: %i[show update]
 
-    respond_to do |format|
-      format.html { @tickets = TicketDecorator.decorate_collection(@tickets) }
-      format.json do
-        render json: {
-          tickets: TicketBlueprint.render_as_hash(@tickets),
-          pagy:    pagy_metadata(@pagy)
-        }
-      end
-    end
+  def index
+    pagy, tickets = pagy(Ticket.all)
+
+    render json: {
+      tickets: TicketBlueprint.render_as_hash(tickets),
+      pagy:    pagy_metadata(pagy)
+    }
+  end
+
+  def show
+    render_json_response ticket, ticket.present?, status: :ok
   end
 
   def create
-    operation = Ticket::Create.new(ticket_create_params.to_h)
+    operation = Ticket::Create.new(
+      **ticket_create_params
+    )
+
     result = operation.call
 
-    if result.success?
-      render json: TicketBlueprint.render(result.model), status: :created
-    else
-      render json: { errors: result.model.errors.full_messages }, status: :unprocessable_entity
-    end
+    render_json_response result.model, result.success?, status: :created
+  end
+
+  def update
+    operation = Ticket::Update.new(ticket, ticket_update_params)
+    result = operation.call
+
+    render_json_response(
+      result.model, result.success?, blueprint: TicketBlueprint
+    )
   end
 
   private
+
+  def ticket
+    @ticket ||= Ticket.find(params[:id])
+  end
 
   def ticket_create_params
     params.require(:ticket).permit(
@@ -36,5 +49,10 @@ class TicketsController < ApplicationController
       :user_id,
       :project_id
     )
+  end
+
+  def ticket_update_params
+    parameters = %i[title description status user_id project_id]
+    params.require(:ticket).permit(*parameters)
   end
 end

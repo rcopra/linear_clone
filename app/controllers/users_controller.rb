@@ -2,26 +2,16 @@
 
 class UsersController < ApplicationController
   def index
-    @users = UserDecorator.decorate_collection(User.all)
+    users = User.all
+
+    render json: UserBlueprint.render_as_hash(users)
   end
 
-  def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    result = User::Create.new(user_create_params.to_h).call
+  def create
+    operation = User::Create.new(user_create_params.to_h)
+    result = operation.call
 
-    respond_to do |format|
-      if result.success?
-        format.json { render json: UserBlueprint.render(result.model), status: :created }
-        format.html { redirect_to users_path, notice: 'User created' } # rubocop:disable Rails/I18nLocaleTexts
-      else
-        format.json do
-          render json: { errors: result.model.errors.full_messages }, status: :unprocessable_entity
-        end
-        format.html do
-          @user = result.model
-          render :new, status: :unprocessable_entity
-        end
-      end
-    end
+    render_json_response result.model, result.success?, status: :created
   end
 
   private

@@ -44,18 +44,53 @@ RSpec.describe 'Tickets', type: :request do
     end
   end
 
-  describe '#create' do
-    subject(:request) { post tickets_path, params: { ticket: params } }
+  describe '#show' do
+    subject(:request) { get ticket_path(ticket_id), headers: { 'Accept' => 'application/json' } }
 
-    context 'with valid params' do
-      let(:params) { valid_params }
-      let(:created_ticket) { Ticket.find(parsed_response['id']) }
+    let!(:ticket) { create(:ticket, title: 'Detailed Ticket', project: project, user: user) }
+
+    context 'when ticket exists' do
+      let(:ticket_id) { ticket.id }
 
       before { request }
 
+      it 'returns 200 OK' do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'returns the correct ticket' do
+        expect(parsed_response['id']).to eq(ticket.id)
+        expect(parsed_response['title']).to eq('Detailed Ticket')
+      end
+    end
+
+    context 'when ticket does not exist' do
+      let(:ticket_id) { -1 }
+
+      it 'returns 404 Not Found' do
+        request
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
+  describe '#create' do
+    subject(:request) { post tickets_path, params: { ticket: params }, headers: }
+
+    let(:params) { valid_params }
+    let(:headers) { { 'Accept' => 'application/json' } }
+
+    context 'with valid params' do
+      let(:params) { valid_params }
+
       it 'returns 201 created' do
+        request
         expect(response).to be_created
-        expect(created_ticket).to have_attributes(
+      end
+
+      it 'creates a ticket' do
+        request
+        expect(Ticket.last).to have_attributes(
           title:       'A bug',
           description: 'Fix it',
           status:      'open'
@@ -66,10 +101,49 @@ RSpec.describe 'Tickets', type: :request do
     context 'with invalid params' do
       let(:params) { invalid_params }
 
-      before { request }
-
-      it 'does not create a ticket and returns 422' do
+      it 'returns 422' do
+        request
         expect(response).to be_unprocessable
+      end
+    end
+  end
+
+  describe '#update' do
+    subject(:request) { patch ticket_path(ticket), params: { ticket: update_params }, headers: }
+
+    let!(:ticket) { create(:ticket, title: 'Original Title', project:, user:) }
+    let(:headers) { { 'Accept' => 'application/json' } }
+
+    context 'with valid params' do
+      let(:update_params) { { title: 'Updated Title' } }
+
+      it 'returns 200 OK' do
+        request
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'updates the ticket' do
+        expect { request }.to change { ticket.reload.title }.to('Updated Title')
+      end
+    end
+
+    context 'with invalid params' do
+      let(:update_params) { { title: '' } }
+
+      it 'returns 422' do
+        request
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    context 'when the ticket does not exist' do
+      subject(:request) do
+        patch ticket_path(-1), params: { ticket: { title: 'Should Fail' } }, headers:
+      end
+
+      it 'returns 404' do
+        request
+        expect(response).to have_http_status(:not_found)
       end
     end
   end

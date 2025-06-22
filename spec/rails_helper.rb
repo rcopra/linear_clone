@@ -45,8 +45,8 @@ RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
 
   # Include custom test helpers
-  config.include JsonResponseHelper
-  config.include OperationResultHelper if defined?(OperationResultHelper)
+  config.include JsonResponseHelper, type: :request
+  config.include OperationResultHelper, type: :request
 
   # Clean up uploaded files (if applicable)
   config.after do
