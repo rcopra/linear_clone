@@ -24,7 +24,7 @@ RSpec.describe 'Tickets', type: :request do
   end
 
   describe '#index' do
-    subject(:request) { get tickets_path, headers: { 'Accept' => 'application/json' } }
+    subject(:request) { get tickets_path }
 
     let!(:ticket1) { create(:ticket, title: 'First Ticket', project: project, user: user) }
     let!(:ticket2) { create(:ticket, title: 'Second Ticket', project: project, user: user) }
@@ -45,7 +45,7 @@ RSpec.describe 'Tickets', type: :request do
   end
 
   describe '#show' do
-    subject(:request) { get ticket_path(ticket_id), headers: { 'Accept' => 'application/json' } }
+    subject(:request) { get ticket_path(ticket_id) }
 
     let!(:ticket) { create(:ticket, title: 'Detailed Ticket', project: project, user: user) }
 
@@ -75,10 +75,9 @@ RSpec.describe 'Tickets', type: :request do
   end
 
   describe '#create' do
-    subject(:request) { post tickets_path, params: { ticket: params }, headers: }
+    subject(:request) { post tickets_path, params: { ticket: params } }
 
     let(:params) { valid_params }
-    let(:headers) { { 'Accept' => 'application/json' } }
 
     context 'with valid params' do
       let(:params) { valid_params }
@@ -109,10 +108,9 @@ RSpec.describe 'Tickets', type: :request do
   end
 
   describe '#update' do
-    subject(:request) { patch ticket_path(ticket), params: { ticket: update_params }, headers: }
+    subject(:request) { patch ticket_path(ticket), params: { ticket: update_params } }
 
     let!(:ticket) { create(:ticket, title: 'Original Title', project:, user:) }
-    let(:headers) { { 'Accept' => 'application/json' } }
 
     context 'with valid params' do
       let(:update_params) { { title: 'Updated Title' } }
@@ -138,11 +136,29 @@ RSpec.describe 'Tickets', type: :request do
 
     context 'when the ticket does not exist' do
       subject(:request) do
-        patch ticket_path(-1), params: { ticket: { title: 'Should Fail' } }, headers:
+        patch ticket_path(-1), params: { ticket: { title: 'Should Fail' } }
       end
 
       it 'returns 404' do
         request
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
+  describe '#destroy' do
+    subject(:request) { delete ticket_path(ticket.id) }
+
+    let!(:ticket) { create(:ticket, project:, user:) }
+
+    it 'deletes the ticket and returns 204 No Content' do
+      expect { request }.to change(Ticket, :count).by(-1)
+      expect(response).to have_http_status(:no_content)
+    end
+
+    context 'when ticket does not exist' do
+      it 'returns 404 Not Found' do
+        delete ticket_path(-1)
         expect(response).to have_http_status(:not_found)
       end
     end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TicketsController < ApplicationController
-  before_action :ticket, only: %i[show update]
+  before_action :ticket, only: %i[show update destroy]
 
   def index
     pagy, tickets = pagy(Ticket.all)
@@ -18,7 +18,7 @@ class TicketsController < ApplicationController
 
   def create
     operation = Ticket::Create.new(
-      **ticket_create_params
+      **ticket_params
     )
 
     result = operation.call
@@ -27,12 +27,17 @@ class TicketsController < ApplicationController
   end
 
   def update
-    operation = Ticket::Update.new(ticket, ticket_update_params)
+    operation = Ticket::Update.new(ticket, ticket_params)
     result = operation.call
 
     render_json_response(
       result.model, result.success?, blueprint: TicketBlueprint
     )
+  end
+
+  def destroy
+    ticket.destroy!
+    head :no_content
   end
 
   private
@@ -41,7 +46,7 @@ class TicketsController < ApplicationController
     @ticket ||= Ticket.find(params[:id])
   end
 
-  def ticket_create_params
+  def ticket_params
     params.require(:ticket).permit(
       :title,
       :description,
@@ -49,10 +54,5 @@ class TicketsController < ApplicationController
       :user_id,
       :project_id
     )
-  end
-
-  def ticket_update_params
-    parameters = %i[title description status user_id project_id]
-    params.require(:ticket).permit(*parameters)
   end
 end
